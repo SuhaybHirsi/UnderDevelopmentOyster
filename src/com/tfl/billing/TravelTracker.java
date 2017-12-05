@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class TravelTracker implements ScanListener {
-    private static final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
+    private final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
     private final Set<UUID> currentlyTravelling = new HashSet<UUID>();
     private Database customerDatabase;
     private PaymentHandlerInterface payment_instance;
@@ -35,7 +35,7 @@ public class TravelTracker implements ScanListener {
 
         List<Customer> customers = customerDatabase.getCustomers();
         for (Customer customer : customers) {
-            payment_instance.charge(customer,eventLog);
+            payment_instance.charge(customer, eventLog);
         }
     }
 
@@ -65,6 +65,11 @@ public class TravelTracker implements ScanListener {
                 throw new UnknownOysterCardException(cardId);
             }
         }
+    }
+
+    public List<JourneyEvent> getEventLog()
+    {
+        return eventLog;
     }
 
 }

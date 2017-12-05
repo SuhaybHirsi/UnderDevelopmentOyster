@@ -21,11 +21,15 @@ import java.util.*;
 
 import com.oyster.OysterCard;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Assert;
 
-
+import static java.util.Arrays.asList;
 
 public class TravelTrackerTest {
 
@@ -98,6 +102,7 @@ public class TravelTrackerTest {
     }
 
     ClockTestDouble myClock= new ClockTestDouble();
+    ClockTestDouble tempClock= new ClockTestDouble();
     final Database myCustomerDB = new CustomerDatabaseTestDouble();
     final GeneralPaymentsSystem myPS= new PaymentSystemTestDouble();
 
@@ -145,21 +150,23 @@ public class TravelTrackerTest {
 
         myClock.addTime(25200000l); //peak
         myClock.addTime(75200000l); //off peak
-        myClock.addTime(25200000l); //
-        myClock.addTime(75200000l); //peak
+        tempClock.addTime(25200000l); //
+        tempClock.addTime(75200000l); //peak
 
         TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentHandler, myClock);
+
+        JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), tempClock);
+        JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), tempClock);
+        List<JourneyEvent> eventLog = new ArrayList<>();
+        eventLog.add(journeyStart);
+        eventLog.add(journeyEnd);
 
         context.checking(new Expectations() {{
             exactly(1).of(mockCustomerDB).isRegisteredId(myCard.id()); will(returnValue(true));
             Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
             List<Customer> myCustomers= new ArrayList<Customer>();
 //            List<Journey> journeys = new ArrayList<Journey>();
-            JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), myClock);
-            JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), myClock);
-            List<JourneyEvent> eventLog = new ArrayList<>();
-            eventLog.add(journeyStart);
-            eventLog.add(journeyEnd);
+
 //            Journey myJourney= new Journey(journeyStart, journeyEnd);
 //            journeys.add(myJourney);
             BigDecimal customerTotal = new BigDecimal(3.20);
@@ -172,11 +179,25 @@ public class TravelTrackerTest {
 
         }});
 
+
         travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
 //        travelTracker.cardScanned(myCard.id(), paddingtonReader.id());
         paddingtonReader.touch(myCard);
 
         bakerStreetReader.touch(myCard);
+
+        int index=0;
+        for (JourneyEvent myEvent : eventLog)
+        {
+            if (index>=travelTracker.getEventLog().size())
+            {
+                Assert.fail();
+                break;
+            }
+            assertEquals(myEvent.cardId(), travelTracker.getEventLog().get(index).cardId());
+            assertEquals(myEvent.readerId(), travelTracker.getEventLog().get(index).readerId());
+            index++;
+        }
 
 
         travelTracker.chargeAccounts();

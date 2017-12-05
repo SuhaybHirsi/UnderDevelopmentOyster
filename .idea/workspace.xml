@@ -2,6 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d17a4a1-7572-4efb-a453-0505edbb0d39" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/billing/TravelTracker.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/billing/TravelTracker.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$1.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$2.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$ClockTestDouble.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$ClockTestDouble.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$CustomerDatabaseTestDouble$1.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$CustomerDatabaseTestDouble$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$CustomerDatabaseTestDouble.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$CustomerDatabaseTestDouble.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$PaymentSystemTestDouble.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest$PaymentSystemTestDouble.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest.class" afterPath="$PROJECT_DIR$/out/production/UnderDevelopmentOyster/com/tfl/tests/TravelTrackerTest.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java" afterPath="$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/tfl/tests/TravelTrackerTest.java" afterPath="$PROJECT_DIR$/src/com/tfl/tests/TravelTrackerTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -37,9 +47,14 @@
       <file leaf-file-name="TravelTracker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="27" column="49" lean-forward="true" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-              <folding />
+            <state relative-caret-position="403">
+              <caret line="69" column="11" lean-forward="false" selection-start-line="69" selection-start-column="11" selection-end-line="69" selection-end-column="11" />
+              <folding>
+                <element signature="e#246#260#0" expanded="true" />
+                <element signature="e#325#331#0" expanded="true" />
+                <element signature="e#2141#2142#0" expanded="true" />
+                <element signature="e#2172#2173#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -77,11 +92,22 @@
       <file leaf-file-name="TravelTrackerTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/tfl/tests/TravelTrackerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-61">
-              <caret line="173" column="0" lean-forward="true" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+            <state relative-caret-position="781">
+              <caret line="194" column="22" lean-forward="false" selection-start-line="194" selection-start-column="22" selection-end-line="194" selection-end-column="22" />
               <folding>
-                <element signature="e#5478#5488#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#6073#6083#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JourneyTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/tfl/tests/JourneyTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="44" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -100,6 +126,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java" />
         <option value="$PROJECT_DIR$/src/com/tfl/tests/TravelTrackerTest.java" />
       </list>
     </option>
@@ -132,6 +159,31 @@
             <path>
               <item name="UnderDevelopmentOyster" type="b2602c69:ProjectViewProjectNode" />
               <item name="UnderDevelopmentOyster" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="UnderDevelopmentOyster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="UnderDevelopmentOyster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="UnderDevelopmentOyster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="UnderDevelopmentOyster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tfl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="UnderDevelopmentOyster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="UnderDevelopmentOyster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tfl" type="462c0819:PsiDirectoryNode" />
+              <item name="billing" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="UnderDevelopmentOyster" type="b2602c69:ProjectViewProjectNode" />
+              <item name="UnderDevelopmentOyster" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="tfl" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -284,10 +336,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 31m 45s.xml">
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 46m 02s.xml">
       <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 32m 43s.xml">
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 46m 58s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 47m 42s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 49m 59s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 50m 34s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 14h 53m 44s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 15h 12m 42s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 15h 15m 07s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 15h 17m 37s.xml">
+      <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TravelTrackerTest_chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak - 2017.12.05 at 15h 17m 45s.xml">
       <configuration name="TravelTrackerTest.chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -349,14 +425,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="27" column="49" lean-forward="true" selection-start-line="27" selection-start-column="49" selection-end-line="27" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/tfl/billing/PaymentHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
@@ -381,12 +449,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/tfl/tests/JourneyTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/tfl/billing/TravelTracker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="69" column="11" lean-forward="false" selection-start-line="69" selection-start-column="11" selection-end-line="69" selection-end-column="11" />
+          <folding>
+            <element signature="e#246#260#0" expanded="true" />
+            <element signature="e#325#331#0" expanded="true" />
+            <element signature="e#2141#2142#0" expanded="true" />
+            <element signature="e#2172#2173#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/tfl/tests/TravelTrackerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-61">
-          <caret line="173" column="0" lean-forward="true" selection-start-line="173" selection-start-column="0" selection-end-line="173" selection-end-column="0" />
+        <state relative-caret-position="781">
+          <caret line="194" column="22" lean-forward="false" selection-start-line="194" selection-start-column="22" selection-end-line="194" selection-end-column="22" />
           <folding>
-            <element signature="e#5478#5488#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#6073#6083#0" expanded="true" />
           </folding>
         </state>
       </provider>
