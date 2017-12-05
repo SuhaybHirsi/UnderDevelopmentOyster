@@ -8,15 +8,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.tfl.billing.TravelTracker.OFF_PEAK_JOURNEY_PRICE;
-import static com.tfl.billing.TravelTracker.PEAK_JOURNEY_PRICE;
 
-public class TotalChargeForCustomer implements PaymentStrategy{
+public class CalculationStrategyOne implements PaymentStrategyInterface {
+
+    static final BigDecimal OFF_PEAK_JOURNEY_PRICE = new BigDecimal(2.40);
+    static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
 
     private final List<Journey> journeysForCustomer = new ArrayList<Journey>();
     private final List<JourneyEvent> eventLog;
 
-    public TotalChargeForCustomer(List<JourneyEvent> eventLog ){
+    public CalculationStrategyOne(List<JourneyEvent> eventLog ){
         this.eventLog = eventLog;
     }
 

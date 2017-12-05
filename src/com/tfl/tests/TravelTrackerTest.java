@@ -23,6 +23,10 @@ import com.oyster.OysterCard;
 
 import static org.hamcrest.Matchers.*;
 
+
+
+
+
 public class TravelTrackerTest {
 
     private class ClockTestDouble implements ClockInterface
@@ -70,32 +74,32 @@ public class TravelTrackerTest {
         }
     }
 
-//    private class PaymentSystemTestDouble implements GeneralPaymentsSystem
-//    {
-//
-//        @Override
-//        public void charge(Customer customer, List<Journey> journeys, BigDecimal totalBill) {
-//            System.out.println("\n\n*****************\n\n");
-//            System.out.println("Customer: " + customer.fullName() + " - " + customer.cardId());
-//            System.out.println("Journey Summary:");
-//            Iterator i$ = journeys.iterator();
-//
-//            while(i$.hasNext()) {
-//                Journey journey = (Journey)i$.next();
-//                System.out.println(journey.formattedStartTime() + "\t" + this.stationWithReader(journey.originId()) + "\t" + " -- " + journey.formattedEndTime() + "\t" + this.stationWithReader(journey.destinationId()));
-//            }
-//
-//            System.out.println("Total charge £: " + totalBill);
-//        }
-//
-//        private String stationWithReader(UUID originId) {
-//            return OysterReaderLocator.lookup(originId).name();
-//        }
-//    }
+    private class PaymentSystemTestDouble implements GeneralPaymentsSystem
+    {
+
+        @Override
+        public void charge(Customer customer, List<Journey> journeys, BigDecimal totalBill) {
+            System.out.println("\n\n*****************\n\n");
+            System.out.println("Customer: " + customer.fullName() + " - " + customer.cardId());
+            System.out.println("Journey Summary:");
+            Iterator i$ = journeys.iterator();
+
+            while(i$.hasNext()) {
+                Journey journey = (Journey)i$.next();
+                System.out.println(journey.formattedStartTime() + "\t" + this.stationWithReader(journey.originId()) + "\t" + " -- " + journey.formattedEndTime() + "\t" + this.stationWithReader(journey.destinationId()));
+            }
+
+            System.out.println("Total charge £: " + totalBill);
+        }
+
+        private String stationWithReader(UUID originId) {
+            return OysterReaderLocator.lookup(originId).name();
+        }
+    }
 
     ClockTestDouble myClock= new ClockTestDouble();
     final Database myCustomerDB = new CustomerDatabaseTestDouble();
-    //final GeneralPaymentsSystem myPS= new PaymentSystemTestDouble();
+    final GeneralPaymentsSystem myPS= new PaymentSystemTestDouble();
 
     final OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
 
@@ -106,64 +110,34 @@ public class TravelTrackerTest {
     @Rule
     public JUnitRuleMockery context = new JUnitRuleMockery();
 
-    GeneralPaymentsSystem mockPaymentAdapter = context.mock(GeneralPaymentsSystem.class);
+    PaymentHandlerInterface mockPaymentHandler = context.mock(PaymentHandlerInterface.class);
     Database mockCustomerDB = context.mock(Database.class);
 
+    @Test
+    public void chargeAccountsForTwoCustomers() {
 
+        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentHandler, myClock);
 
-//    @Test
-//    public void chargeAccountsForZeroTrips() {
-//
-//        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentSystem, myClock);
-//
-//        context.checking(new Expectations() {{
-//            Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
-//            List<Customer> myCustomers= new ArrayList<Customer>();
-//            List<Journey> journeys = new ArrayList<Journey>();
-//            BigDecimal customerTotal = new BigDecimal(0);
-//            myCustomers.add(zlatan_ibrahimovic);
-//            exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
-//            customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
-//
-////          exactly(1).of(mockCustomerDB).isRegisteredId(myCard.id());will(returnValue(true));
-//            exactly(1).of(mockPaymentSystem).charge(zlatan_ibrahimovic, journeys , customerTotal);
-//
-//        }});
-//
-//        travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
-//
-//        travelTracker.chargeAccounts();
-//
-//    }
+        context.checking(new Expectations() {{
+            List<Customer> myCustomers= new ArrayList<Customer>();
 
-@Test
-public void chargeAccountsForZeroTrips() {
+            Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
+            Customer eden_Hazard = new Customer("Eden Hazard", new OysterCard("00400000-8cf0-11bd-b23e-10b96e4ef00d"));
 
-    TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentAdapter, myClock);
+            myCustomers.add(zlatan_ibrahimovic);
+            myCustomers.add(eden_Hazard);
+            exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
 
-    context.checking(new Expectations() {{
-        List<Customer> myCustomers= new ArrayList<Customer>();
+            exactly(1).of(mockPaymentHandler).charge(zlatan_ibrahimovic);
+            exactly(1).of(mockPaymentHandler).charge(eden_Hazard);
 
-        Customer Zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
-        Customer Eden_Hazard = new Customer("Eden Hazard", new OysterCard("00400000-8cf0-11bd-b23e-10b96e4ef00d"));
+        }});
 
-        myCustomers.add(Zlatan_ibrahimovic);
-        myCustomers.add(Eden_Hazard);
-        exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
+        travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
 
-        exactly(2).of(mockPaymentAdapter).charge();
+        travelTracker.chargeAccounts();
 
-    }});
-
-    travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
-
-    travelTracker.chargeAccounts();
-
-}
-
-
-
-
+    }
 
 
 //    @Test
@@ -215,21 +189,22 @@ public void chargeAccountsForZeroTrips() {
 ////        UUID END_READER_ID = UUID.randomUUID();
 //
 //    }
-//
-//
 
-//    @Test
-//    public void connect() {
-//
+
+
+    @Test
+    public void connect() {
+
 //        TravelTracker travelTracker = new TravelTracker();
 //        travelTracker.chargeAccounts();
-//    }
-//
-//    @Test
-//    public void cardScanned() {
-//
-//
-//    }
+
+    }
+
+    @Test
+    public void cardScanned() {
+
+
+    }
 
 }
 

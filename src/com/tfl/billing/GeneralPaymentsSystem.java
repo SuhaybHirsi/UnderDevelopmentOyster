@@ -12,5 +12,5 @@ public interface GeneralPaymentsSystem {
 //        return PaymentSystemTemp.instance;
 //    }
 
-    void charge();
+    void charge(Customer customer, List<Journey> journeys, BigDecimal totalBill);
 }

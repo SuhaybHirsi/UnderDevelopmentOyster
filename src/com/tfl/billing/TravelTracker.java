@@ -2,38 +2,26 @@ package com.tfl.billing;
 
 import com.oyster.*;
 import com.tfl.external.Customer;
-import com.tfl.external.CustomerDatabase;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 public class TravelTracker implements ScanListener {
-
-    static final BigDecimal OFF_PEAK_JOURNEY_PRICE = new BigDecimal(2.40);
-    static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
-
-    private static List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
+    private static final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
     private final Set<UUID> currentlyTravelling = new HashSet<UUID>();
     private Database customerDatabase;
-    private GeneralPaymentsSystem payment_instance;
+    private PaymentHandlerInterface payment_instance;
     private final ClockInterface clock;
 
 
-//    public TravelTracker() {
-//        this.customerDatabase = CustomerDatabaseAdapter.getInstance();
-//        this.payment_instance = PaymentsSystemAdapter.getInstance();
-//        this.clock=new SystemClock();
-//
-//    }
-
     public TravelTracker() {
         this.customerDatabase = CustomerDatabaseAdapter.getInstance();
+        this.payment_instance = new PaymentHandler(new CalculationStrategyOne(eventLog));
         this.clock=new SystemClock();
 
     }
 
-
-    public TravelTracker(Database customer_database, GeneralPaymentsSystem payment_instance, ClockInterface clock) {
+    public TravelTracker(Database customer_database, PaymentHandlerInterface payment_instance, ClockInterface clock) {
 
 
         this.customerDatabase = customer_database;
@@ -42,27 +30,14 @@ public class TravelTracker implements ScanListener {
     }
 
 
-//    public void chargeAccounts() {
-//
-//
-//        List<Customer> customers = customerDatabase.getCustomers();
-//        for (Customer customer : customers) {
-//            totalJourneysFor(customer);
-//        }
-//    }
-
     public void chargeAccounts() {
 
 
         List<Customer> customers = customerDatabase.getCustomers();
         for (Customer customer : customers) {
-            if(payment_instance ==null) {
-                this.payment_instance = new PaymentsSystemAdapter(new TotalChargeForCustomer(eventLog), customer);
-            }
-            payment_instance.charge();
+            payment_instance.charge(customer);
         }
     }
-
 
 
     public void connect(OysterCardReader... cardReaders) {
