@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PaymentStrategyInterface {
 
-    BigDecimal totalJourneysFor(Customer customer);
+    BigDecimal totalJourneysFor(Customer customer, List<JourneyEvent> eventLog);
 
     List<Journey> getJourneysForCustomer();
 }

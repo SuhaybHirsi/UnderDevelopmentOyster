@@ -22,8 +22,8 @@ public class PaymentHandler implements PaymentHandlerInterface{
     }
 
     @Override
-    public void charge(Customer customer) {
-        BigDecimal totalBill = strategy.totalJourneysFor(customer);
+    public void charge(Customer customer,List<JourneyEvent> eventLog) {
+        BigDecimal totalBill = strategy.totalJourneysFor(customer, eventLog);
         List<Journey> journeys = strategy.getJourneysForCustomer();
         payment_instance.charge(customer, journeys,totalBill);
     }

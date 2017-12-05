@@ -128,8 +128,8 @@ public class TravelTrackerTest {
             myCustomers.add(eden_Hazard);
             exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
 
-            exactly(1).of(mockPaymentHandler).charge(zlatan_ibrahimovic);
-            exactly(1).of(mockPaymentHandler).charge(eden_Hazard);
+            exactly(1).of(mockPaymentHandler).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)) );
+            exactly(1).of(mockPaymentHandler).charge(with(equal(eden_Hazard)), with(aNonNull(ArrayList.class)));
 
         }});
 
@@ -138,57 +138,6 @@ public class TravelTrackerTest {
         travelTracker.chargeAccounts();
 
     }
-
-
-//    @Test
-//    public void chargeAccountsForOneTripStartingAtPeakAndEndingAtOffPeak() {
-//
-//
-//        myClock.addTime(25200000l); //peak
-//        myClock.addTime(75200000l); //off peak
-//        myClock.addTime(25200000l); //
-//        myClock.addTime(75200000l); //peak
-//
-//        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentSystem, myClock);
-//
-//        context.checking(new Expectations() {{
-//            exactly(1).of(mockCustomerDB).isRegisteredId(myCard.id()); will(returnValue(true));
-//            Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
-//            List<Customer> myCustomers= new ArrayList<Customer>();
-////            List<Journey> journeys = new ArrayList<Journey>();
-//            JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), myClock);
-//            JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), myClock);
-////            Journey myJourney= new Journey(journeyStart, journeyEnd);
-////            journeys.add(myJourney);
-//            BigDecimal customerTotal = new BigDecimal(3.20);
-//            myCustomers.add(zlatan_ibrahimovic);
-//            exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
-//            customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
-//
-//
-//            exactly(1).of(mockPaymentSystem).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)) , with(equal(customerTotal)));
-//
-//        }});
-//
-//        travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
-////        travelTracker.cardScanned(myCard.id(), paddingtonReader.id());
-//        paddingtonReader.touch(myCard);
-//
-//        bakerStreetReader.touch(myCard);
-//
-//
-//        travelTracker.chargeAccounts();
-//
-//
-//
-//
-//
-//
-////        UUID CARD_ID = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-////        UUID START_READER_ID = UUID.randomUUID();
-////        UUID END_READER_ID = UUID.randomUUID();
-//
-//    }
 
 
 

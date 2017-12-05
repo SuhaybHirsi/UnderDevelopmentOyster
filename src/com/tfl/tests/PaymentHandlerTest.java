@@ -33,6 +33,8 @@ public class PaymentHandlerTest {
     PaymentStrategyInterface mockPaymentStrategy= context.mock(PaymentStrategyInterface.class);
     ClockTestDouble myClock= new ClockTestDouble();
 
+    List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
+
     final OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
 
     OysterCardReader paddingtonReader = OysterReaderLocator.atStation(Station.PADDINGTON);
@@ -40,7 +42,7 @@ public class PaymentHandlerTest {
     OysterCardReader kingsCrossReader = OysterReaderLocator.atStation(Station.KINGS_CROSS);
 
     @Test
-    public void chargeASpecficCustomerForZeroTrips() {
+    public void callsPaymentAdapterChargeMethodWithCorrectParameters() {
         PaymentHandlerInterface paymentHandler = new PaymentHandler(mockPaymentStrategy, mockPaymentSystem);
 
         Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
@@ -52,7 +54,7 @@ public class PaymentHandlerTest {
             BigDecimal customerTotal = new BigDecimal(0);
             customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            exactly(1).of(mockPaymentStrategy).totalJourneysFor(zlatan_ibrahimovic); will(returnValue(customerTotal));
+            exactly(1).of(mockPaymentStrategy).totalJourneysFor(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class))); will(returnValue(customerTotal));
             exactly(1).of(mockPaymentStrategy).getJourneysForCustomer(); will(returnValue(journeys));
 
             exactly(1).of(mockPaymentSystem).charge(zlatan_ibrahimovic,journeys, customerTotal);
@@ -60,7 +62,7 @@ public class PaymentHandlerTest {
 
         }});
 
-        paymentHandler.charge(zlatan_ibrahimovic);
+        paymentHandler.charge(zlatan_ibrahimovic,eventLog);
 
     }
 
@@ -76,17 +78,21 @@ public class PaymentHandlerTest {
         Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
 
 
-        context.checking(new Expectations() {{
-            List<Journey> journeys = new ArrayList<Journey>();
-            JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), myClock);
-            JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), myClock);
-            Journey myJourney= new Journey(journeyStart, journeyEnd);
-            journeys.add(myJourney);
 
+        List<Journey> journeys = new ArrayList<Journey>();
+
+        JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), myClock);
+        JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), myClock);
+        Journey myJourney= new Journey(journeyStart, journeyEnd);
+        journeys.add(myJourney);
+
+
+
+        context.checking(new Expectations() {{
             BigDecimal customerTotal = new BigDecimal(3.20);
             customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            exactly(1).of(mockPaymentStrategy).totalJourneysFor(zlatan_ibrahimovic); will(returnValue(customerTotal));
+            exactly(1).of(mockPaymentStrategy).totalJourneysFor(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class))); will(returnValue(customerTotal));
             exactly(1).of(mockPaymentStrategy).getJourneysForCustomer(); will(returnValue(journeys));
 
             exactly(1).of(mockPaymentSystem).charge(zlatan_ibrahimovic,journeys, customerTotal);
@@ -94,7 +100,8 @@ public class PaymentHandlerTest {
 
         }});
 
-        paymentHandler.charge(zlatan_ibrahimovic);
+        paymentHandler.charge(zlatan_ibrahimovic,  eventLog);
+        eventLog.clear();
 
     }
 
@@ -120,7 +127,7 @@ public class PaymentHandlerTest {
             BigDecimal customerTotal = new BigDecimal(2.40);
             customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            exactly(1).of(mockPaymentStrategy).totalJourneysFor(zlatan_ibrahimovic); will(returnValue(customerTotal));
+            exactly(1).of(mockPaymentStrategy).totalJourneysFor(with(equal(zlatan_ibrahimovic)),with(aNonNull(ArrayList.class))); will(returnValue(customerTotal));
             exactly(1).of(mockPaymentStrategy).getJourneysForCustomer(); will(returnValue(journeys));
 
             exactly(1).of(mockPaymentSystem).charge(zlatan_ibrahimovic,journeys, customerTotal);
@@ -128,7 +135,7 @@ public class PaymentHandlerTest {
 
         }});
 
-        paymentHandler.charge(zlatan_ibrahimovic);
+        paymentHandler.charge(zlatan_ibrahimovic,eventLog);
 
     }
 

@@ -15,14 +15,10 @@ public class CalculationStrategyOne implements PaymentStrategyInterface {
     static final BigDecimal PEAK_JOURNEY_PRICE = new BigDecimal(3.20);
 
     private final List<Journey> journeysForCustomer = new ArrayList<Journey>();
-    private final List<JourneyEvent> eventLog;
 
-    public CalculationStrategyOne(List<JourneyEvent> eventLog ){
-        this.eventLog = eventLog;
-    }
 
     @Override
-    public BigDecimal totalJourneysFor(Customer customer) {
+    public BigDecimal totalJourneysFor(Customer customer,List<JourneyEvent> eventLog) {
         List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
         for (JourneyEvent journeyEvent : eventLog) {
             if (journeyEvent.cardId().equals(customer.cardId())) {

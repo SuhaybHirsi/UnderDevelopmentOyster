@@ -16,7 +16,7 @@ public class TravelTracker implements ScanListener {
 
     public TravelTracker() {
         this.customerDatabase = CustomerDatabaseAdapter.getInstance();
-        this.payment_instance = new PaymentHandler(new CalculationStrategyOne(eventLog));
+        this.payment_instance = new PaymentHandler(new CalculationStrategyOne());
         this.clock=new SystemClock();
 
     }
@@ -35,7 +35,7 @@ public class TravelTracker implements ScanListener {
 
         List<Customer> customers = customerDatabase.getCustomers();
         for (Customer customer : customers) {
-            payment_instance.charge(customer);
+            payment_instance.charge(customer,eventLog);
         }
     }
 
