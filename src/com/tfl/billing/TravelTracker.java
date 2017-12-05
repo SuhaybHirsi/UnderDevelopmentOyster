@@ -3,29 +3,28 @@ package com.tfl.billing;
 import com.oyster.*;
 import com.tfl.external.Customer;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class TravelTracker implements ScanListener {
     private final List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
     private final Set<UUID> currentlyTravelling = new HashSet<UUID>();
     private Database customerDatabase;
-    private PaymentHandlerInterface payment_instance;
+    private PaymentHandlerInterface payment_handler;
     private final ClockInterface clock;
 
 
     public TravelTracker() {
         this.customerDatabase = CustomerDatabaseAdapter.getInstance();
-        this.payment_instance = new PaymentHandler(new CalculationStrategyOne());
+        this.payment_handler = new PaymentHandler(new CalculationStrategyOne());
         this.clock=new SystemClock();
 
     }
 
-    public TravelTracker(Database customer_database, PaymentHandlerInterface payment_instance, ClockInterface clock) {
+    public TravelTracker(Database customer_database, PaymentHandlerInterface payment_handler, ClockInterface clock) {
 
 
         this.customerDatabase = customer_database;
-        this.payment_instance = payment_instance;
+        this.payment_handler = payment_handler;
         this.clock=clock;
     }
 
@@ -35,7 +34,7 @@ public class TravelTracker implements ScanListener {
 
         List<Customer> customers = customerDatabase.getCustomers();
         for (Customer customer : customers) {
-            payment_instance.charge(customer, eventLog);
+            payment_handler.charge(customer, eventLog);
         }
     }
 

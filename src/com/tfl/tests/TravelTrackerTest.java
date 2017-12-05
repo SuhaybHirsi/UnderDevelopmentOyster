@@ -33,6 +33,38 @@ import static java.util.Arrays.asList;
 
 public class TravelTrackerTest {
 
+    private class PaymentHandlerDouble implements PaymentHandlerInterface
+    {
+        private final PaymentStrategyInterface strategy;
+        private List<JourneyEvent> eventLog = new ArrayList<JourneyEvent>();
+        private GeneralPaymentsSystem payment_instance;
+        private List<Customer> customers = new ArrayList<Customer>();
+
+        public PaymentHandlerDouble(PaymentStrategyInterface strategy, GeneralPaymentsSystem payment_instance) {
+            this.strategy=strategy;
+            this.payment_instance = payment_instance;
+        }
+
+        @Override
+        public void charge(Customer customer,List<JourneyEvent> eventLog) {
+            this.eventLog=eventLog;
+            customers.add(customer);
+            BigDecimal totalBill = strategy.totalJourneysFor(customer, eventLog);
+            List<Journey> journeys = strategy.getJourneysForCustomer();
+            payment_instance.charge(customer, journeys,totalBill);
+        }
+
+        public List<JourneyEvent> getEventLog()
+        {
+            return eventLog;
+        }
+
+        public List<Customer> getCustomers()
+        {
+            return customers;
+        }
+    }
+
     private class ClockTestDouble implements ClockInterface
     {
         ArrayList<Long> myTimes = new ArrayList<>();
@@ -101,10 +133,17 @@ public class TravelTrackerTest {
         }
     }
 
+    @Rule
+    public JUnitRuleMockery context = new JUnitRuleMockery();
+
+    PaymentHandlerInterface mockPaymentHandler = context.mock(PaymentHandlerInterface.class);
+    Database mockCustomerDB = context.mock(Database.class);
+
     ClockTestDouble myClock= new ClockTestDouble();
     ClockTestDouble tempClock= new ClockTestDouble();
     final Database myCustomerDB = new CustomerDatabaseTestDouble();
     final GeneralPaymentsSystem myPS= new PaymentSystemTestDouble();
+    PaymentHandlerDouble myPaymentHandler = new PaymentHandlerDouble(new CalculationStrategyOne(), PaymentsSystemAdapter.getInstance());
 
     final OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
 
@@ -112,35 +151,36 @@ public class TravelTrackerTest {
     OysterCardReader bakerStreetReader = OysterReaderLocator.atStation(Station.BAKER_STREET);
     OysterCardReader kingsCrossReader = OysterReaderLocator.atStation(Station.KINGS_CROSS);
 
-    @Rule
-    public JUnitRuleMockery context = new JUnitRuleMockery();
 
-    PaymentHandlerInterface mockPaymentHandler = context.mock(PaymentHandlerInterface.class);
-    Database mockCustomerDB = context.mock(Database.class);
 
     @Test
     public void chargeAccountsForTwoCustomersWithZeroTrips() {
 
-        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentHandler, myClock);
+        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, myPaymentHandler, myClock);
+        List<JourneyEvent> eventLog = new ArrayList<>();
+        List<Customer> myCustomers= new ArrayList<Customer>();
 
+        Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
+        Customer eden_Hazard = new Customer("Eden Hazard", new OysterCard("00400000-8cf0-11bd-b23e-10b96e4ef00d"));
+
+        myCustomers.add(zlatan_ibrahimovic);
+        myCustomers.add(eden_Hazard);
         context.checking(new Expectations() {{
-            List<Customer> myCustomers= new ArrayList<Customer>();
 
-            Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
-            Customer eden_Hazard = new Customer("Eden Hazard", new OysterCard("00400000-8cf0-11bd-b23e-10b96e4ef00d"));
-
-            myCustomers.add(zlatan_ibrahimovic);
-            myCustomers.add(eden_Hazard);
             exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
 
-            exactly(1).of(mockPaymentHandler).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)) );
-            exactly(1).of(mockPaymentHandler).charge(with(equal(eden_Hazard)), with(aNonNull(ArrayList.class)));
+//            exactly(1).of(mockPaymentHandler).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)) );
+//            exactly(1).of(mockPaymentHandler).charge(with(equal(eden_Hazard)), with(aNonNull(ArrayList.class)));
 
         }});
 
         travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
 
         travelTracker.chargeAccounts();
+
+        assertEquals(myPaymentHandler.getEventLog(), eventLog);
+        assertEquals(myPaymentHandler.getCustomers().get(0), zlatan_ibrahimovic);
+        assertEquals(myPaymentHandler.getCustomers().get(1), eden_Hazard);
 
     }
 
@@ -150,32 +190,34 @@ public class TravelTrackerTest {
 
         myClock.addTime(25200000l); //peak
         myClock.addTime(75200000l); //off peak
+
         tempClock.addTime(25200000l); //
         tempClock.addTime(75200000l); //peak
 
-        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, mockPaymentHandler, myClock);
+        TravelTracker travelTracker = new TravelTracker(mockCustomerDB, myPaymentHandler, myClock);
 
         JourneyEvent journeyStart= new JourneyStart(myCard.id(), paddingtonReader.id(), tempClock);
         JourneyEvent journeyEnd= new JourneyEnd(myCard.id(), bakerStreetReader.id(), tempClock);
         List<JourneyEvent> eventLog = new ArrayList<>();
         eventLog.add(journeyStart);
         eventLog.add(journeyEnd);
-
+        Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
+        List<Customer> myCustomers= new ArrayList<Customer>();
+        myCustomers.add(zlatan_ibrahimovic);
         context.checking(new Expectations() {{
             exactly(1).of(mockCustomerDB).isRegisteredId(myCard.id()); will(returnValue(true));
-            Customer zlatan_ibrahimovic = new Customer("Zlatan Ibrahimovic", new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
-            List<Customer> myCustomers= new ArrayList<Customer>();
+
 //            List<Journey> journeys = new ArrayList<Journey>();
 
 //            Journey myJourney= new Journey(journeyStart, journeyEnd);
 //            journeys.add(myJourney);
             BigDecimal customerTotal = new BigDecimal(3.20);
-            myCustomers.add(zlatan_ibrahimovic);
+
             exactly(1).of(mockCustomerDB).getCustomers(); will(returnValue(myCustomers));
             customerTotal= customerTotal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-
-            exactly(1).of(mockPaymentHandler).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)));
+//
+//            exactly(1).of(mockPaymentHandler).charge(with(equal(zlatan_ibrahimovic)), with(aNonNull(ArrayList.class)));
 
         }});
 
@@ -186,23 +228,27 @@ public class TravelTrackerTest {
 
         bakerStreetReader.touch(myCard);
 
-        int index=0;
-        for (JourneyEvent myEvent : eventLog)
-        {
-            if (index>=travelTracker.getEventLog().size())
-            {
-                Assert.fail();
-                break;
-            }
-            assertEquals(myEvent.cardId(), travelTracker.getEventLog().get(index).cardId());
-            assertEquals(myEvent.readerId(), travelTracker.getEventLog().get(index).readerId());
-            index++;
-        }
+
+
 
 
         travelTracker.chargeAccounts();
 
+//        assertEquals(myPaymentHandler.getEventLog(), eventLog);
+//        assertTrue(eventLog.equals(myPaymentHandler.getEventLog()));
+        if (eventLog.size()!=travelTracker.getEventLog().size())
+        {
+            Assert.fail();
+        }
+        int index=0;
+        for (JourneyEvent myEvent : eventLog)
+        {
 
+            assertEquals(myEvent.cardId(), myPaymentHandler.getEventLog().get(index).cardId());
+            assertEquals(myEvent.readerId(), myPaymentHandler.getEventLog().get(index).readerId());
+            index++;
+        }
+        assertEquals(myPaymentHandler.getCustomers().get(0), zlatan_ibrahimovic);
 
 
 

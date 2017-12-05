@@ -9,23 +9,23 @@ public class PaymentHandler implements PaymentHandlerInterface{
 
     private final PaymentStrategyInterface strategy;
 
-    private GeneralPaymentsSystem payment_instance;
+    private GeneralPaymentsSystem payment_adapter;
 
     public PaymentHandler(PaymentStrategyInterface strategy) {
         this.strategy=strategy;
-        this.payment_instance = PaymentsSystemAdapter.getInstance();
+        this.payment_adapter = PaymentsSystemAdapter.getInstance();
     }
 
-    public PaymentHandler(PaymentStrategyInterface strategy, GeneralPaymentsSystem payment_instance) {
+    public PaymentHandler(PaymentStrategyInterface strategy, GeneralPaymentsSystem payment_adapter) {
         this.strategy=strategy;
-        this.payment_instance = payment_instance;
+        this.payment_adapter = payment_adapter;
     }
 
     @Override
     public void charge(Customer customer,List<JourneyEvent> eventLog) {
         BigDecimal totalBill = strategy.totalJourneysFor(customer, eventLog);
         List<Journey> journeys = strategy.getJourneysForCustomer();
-        payment_instance.charge(customer, journeys,totalBill);
+        payment_adapter.charge(customer, journeys,totalBill);
     }
 
 
